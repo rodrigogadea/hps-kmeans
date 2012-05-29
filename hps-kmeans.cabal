@@ -1,0 +1,24 @@
+name:                hps-kmeans
+version:             0.1.0.0
+synopsis:            A fast and simple k-Means implementation
+
+homepage:            http://github.com/rodrigogadea/hps-kmeans
+
+license:             GPL-3
+license-file:        LICENSE
+author:              Rodrigo Gadea
+maintainer:          rodrigo.gadea@gmail.com
+copyright:           2012 Rodrigo Gadea
+
+category:            Math, Statistics
+
+build-type:          Simple
+cabal-version:       >=1.8
+
+extra-source-files:
+        doc/examples/*.hs
+
+library
+  exposed-modules:     Math.Statistics.KMeans
+  build-depends:       base ==4.5.*, vector ==0.9.*
+  ghc-options:         -O2 -Wall
