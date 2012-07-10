@@ -33,19 +33,29 @@ cloudCenter cloud = UV.map (/ fromIntegral(V.length cloud)) $
 selectFrom :: V.Vector a -> V.Vector Int -> V.Vector a
 selectFrom x = V.map (x V.!)
 
+-- | Checks if a Vector has duplicated elements
+hasDuplicates :: (Eq a) => V.Vector a -> Bool
+hasDuplicates a | (a == V.empty) = False
+                | V.any (\y -> h == y) t == True = True
+                | otherwise = hasDuplicates t
+                where h = a V.! 0
+                      t = V.tail a
+
 -- | k-Means classifier for a given Distance, Variation Guard and Cloud
 kMeans :: (RealFloat a, UV.Unbox a) =>  
           (UV.Vector a -> UV.Vector a -> a) -> a
           -> V.Vector (UV.Vector a) -> V.Vector (UV.Vector a) 
           -> V.Vector (UV.Vector a)
-kMeans distance varGuard centers cloud =
-       let dists = V.map (distanceToCenters distance centers) cloud 
-           assigned = assignCluster dists
-           pointAssign = V.map (selectFrom cloud) $ V.fromList 
-                         [V.elemIndices x assigned | 
-                          x <- [0..(V.length centers - 1)] ]
-           newcenters = V.map cloudCenter pointAssign
-           variation = V.sum $ V.zipWith distance centers newcenters
-       in (if variation > varGuard then 
-               kMeans distance varGuard newcenters cloud
-           else newcenters)
+kMeans distance varGuard centers cloud 
+    | hasDuplicates centers == True = error "Non-unique centers provided, aborting."
+    | otherwise =
+        let dists = V.map (distanceToCenters distance centers) cloud 
+            assigned = assignCluster dists
+            pointAssign = V.map (selectFrom cloud) $ V.fromList 
+                          [V.elemIndices x assigned | 
+                           x <- [0..(V.length centers - 1)] ]
+            newcenters = V.map cloudCenter pointAssign
+            variation = V.sum $ V.zipWith distance centers newcenters
+        in (if variation > varGuard then 
+                kMeans distance varGuard newcenters cloud
+            else newcenters)

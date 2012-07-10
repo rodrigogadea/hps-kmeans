@@ -1,8 +1,10 @@
 name:                hps-kmeans
 version:             0.1.0.0
-synopsis:            A fast and simple k-Means implementation
 
-homepage:            http://github.com/rodrigogadea/hps-kmeans
+synopsis:            An implementation of the k-Means algorithm in Haskell that aims to be simple, readable, extendable and efficient enough to be used as a building block.
+
+description:	     More hand-typed documentation can be found in <http://stathacking.com/hps-kmeans>
+homepage:            http://stathacking.com/hps-kmeans
 
 license:             GPL-3
 license-file:        LICENSE
@@ -21,4 +23,3 @@ extra-source-files:
 library
   exposed-modules:     Math.Statistics.KMeans
   build-depends:       base ==4.5.*, vector ==0.9.*
-  ghc-options:         -O2 -Wall
